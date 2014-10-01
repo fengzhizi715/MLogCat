@@ -54,3 +54,6 @@ MLogCat是一个library，原先出自[Catlog](https://github.com/nolanlawson/Ca
                 android:resource="@xml/recording_widget_info" />
         </receiver>
         <!-- 日志显示页面 logcat end -->
+        
+
+在某个activity中跳转到LogcatActivity即可进入MLogCat的界面。
