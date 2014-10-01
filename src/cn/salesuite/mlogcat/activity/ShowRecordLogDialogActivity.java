@@ -15,12 +15,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import cn.salesuite.mlogcat.R;
+import cn.salesuite.mlogcat.data.FilterQueryWithLevel;
+import cn.salesuite.mlogcat.helper.DialogHelper;
+import cn.salesuite.mlogcat.helper.PreferenceHelper;
+import cn.salesuite.mlogcat.helper.WidgetHelper;
 import cn.salesuite.mlogcat.utils.Callback;
 
-import com.jd.mrd.jingming.logcat.data.FilterQueryWithLevel;
-import com.jd.mrd.jingming.logcat.helper.DialogHelper;
-import com.jd.mrd.jingming.logcat.helper.PreferenceHelper;
-import com.jd.mrd.jingming.logcat.helper.WidgetHelper;
 
 public class ShowRecordLogDialogActivity extends Activity {
 	

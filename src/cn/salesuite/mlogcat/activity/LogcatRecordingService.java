@@ -18,18 +18,18 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 import cn.salesuite.mlogcat.R;
+import cn.salesuite.mlogcat.data.LogLine;
+import cn.salesuite.mlogcat.data.SearchCriteria;
+import cn.salesuite.mlogcat.helper.PreferenceHelper;
+import cn.salesuite.mlogcat.helper.SaveLogHelper;
+import cn.salesuite.mlogcat.helper.ServiceHelper;
+import cn.salesuite.mlogcat.helper.WidgetHelper;
+import cn.salesuite.mlogcat.reader.LogcatReader;
+import cn.salesuite.mlogcat.reader.LogcatReaderLoader;
 import cn.salesuite.mlogcat.utils.ArrayUtil;
 import cn.salesuite.mlogcat.utils.LogLineAdapterUtil;
 import cn.salesuite.mlogcat.utils.UtilLogger;
 
-import com.jd.mrd.jingming.logcat.data.LogLine;
-import com.jd.mrd.jingming.logcat.data.SearchCriteria;
-import com.jd.mrd.jingming.logcat.helper.PreferenceHelper;
-import com.jd.mrd.jingming.logcat.helper.SaveLogHelper;
-import com.jd.mrd.jingming.logcat.helper.ServiceHelper;
-import com.jd.mrd.jingming.logcat.helper.WidgetHelper;
-import com.jd.mrd.jingming.logcat.reader.LogcatReader;
-import com.jd.mrd.jingming.logcat.reader.LogcatReaderLoader;
 
 /**
  * Reads logs.

@@ -16,13 +16,13 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.Toast;
 import cn.salesuite.mlogcat.R;
+import cn.salesuite.mlogcat.helper.PackageHelper;
+import cn.salesuite.mlogcat.helper.PreferenceHelper;
 import cn.salesuite.mlogcat.ui.MockDisabledListPreference;
 import cn.salesuite.mlogcat.ui.MultipleChoicePreference;
 import cn.salesuite.mlogcat.utils.ArrayUtil;
 import cn.salesuite.mlogcat.utils.StringUtil;
 
-import com.jd.mrd.jingming.logcat.helper.PackageHelper;
-import com.jd.mrd.jingming.logcat.helper.PreferenceHelper;
 
 public class SettingsActivity extends PreferenceActivity implements OnPreferenceChangeListener {
 	

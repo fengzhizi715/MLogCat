@@ -5,12 +5,12 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 
+import cn.salesuite.mlogcat.helper.DialogHelper;
+import cn.salesuite.mlogcat.helper.PreferenceHelper;
+import cn.salesuite.mlogcat.helper.ServiceHelper;
+import cn.salesuite.mlogcat.helper.WidgetHelper;
 import cn.salesuite.mlogcat.utils.UtilLogger;
 
-import com.jd.mrd.jingming.logcat.helper.DialogHelper;
-import com.jd.mrd.jingming.logcat.helper.PreferenceHelper;
-import com.jd.mrd.jingming.logcat.helper.ServiceHelper;
-import com.jd.mrd.jingming.logcat.helper.WidgetHelper;
 
 public class RecordingWidgetProvider extends AppWidgetProvider {
 

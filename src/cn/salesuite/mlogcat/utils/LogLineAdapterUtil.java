@@ -3,9 +3,9 @@ package cn.salesuite.mlogcat.utils;
 import android.content.Context;
 import android.util.Log;
 import cn.salesuite.mlogcat.R;
+import cn.salesuite.mlogcat.data.ColorScheme;
+import cn.salesuite.mlogcat.helper.PreferenceHelper;
 
-import com.jd.mrd.jingming.logcat.data.ColorScheme;
-import com.jd.mrd.jingming.logcat.helper.PreferenceHelper;
 
 public class LogLineAdapterUtil {
 	

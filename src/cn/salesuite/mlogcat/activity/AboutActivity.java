@@ -19,9 +19,9 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import cn.salesuite.mlogcat.R;
+import cn.salesuite.mlogcat.helper.PackageHelper;
 import cn.salesuite.mlogcat.utils.UtilLogger;
 
-import com.jd.mrd.jingming.logcat.helper.PackageHelper;
 
 public class AboutActivity extends Activity implements OnClickListener {
 	

@@ -56,6 +56,28 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import cn.salesuite.mlogcat.R;
 import cn.salesuite.mlogcat.app.BaseActivity;
+import cn.salesuite.mlogcat.constant.Constant;
+import cn.salesuite.mlogcat.data.ColorScheme;
+import cn.salesuite.mlogcat.data.FilterAdapter;
+import cn.salesuite.mlogcat.data.LogFileAdapter;
+import cn.salesuite.mlogcat.data.LogLine;
+import cn.salesuite.mlogcat.data.LogLineAdapter;
+import cn.salesuite.mlogcat.data.SavedLog;
+import cn.salesuite.mlogcat.data.SearchCriteria;
+import cn.salesuite.mlogcat.data.SendLogDetails;
+import cn.salesuite.mlogcat.data.SenderAppAdapter;
+import cn.salesuite.mlogcat.data.SortedFilterArrayAdapter;
+import cn.salesuite.mlogcat.data.TagAndProcessIdAdapter;
+import cn.salesuite.mlogcat.db.CatlogDBHelper;
+import cn.salesuite.mlogcat.db.FilterItem;
+import cn.salesuite.mlogcat.helper.BuildHelper;
+import cn.salesuite.mlogcat.helper.DialogHelper;
+import cn.salesuite.mlogcat.helper.PreferenceHelper;
+import cn.salesuite.mlogcat.helper.SaveLogHelper;
+import cn.salesuite.mlogcat.helper.ServiceHelper;
+import cn.salesuite.mlogcat.helper.UpdateHelper;
+import cn.salesuite.mlogcat.reader.LogcatReader;
+import cn.salesuite.mlogcat.reader.LogcatReaderLoader;
 import cn.salesuite.mlogcat.ui.ExceptionCatchingListView;
 import cn.salesuite.mlogcat.utils.ArrayUtil;
 import cn.salesuite.mlogcat.utils.LogLineAdapterUtil;
@@ -65,28 +87,6 @@ import cn.salesuite.saf.inject.annotation.InjectView;
 import cn.salesuite.saf.log.L;
 import cn.salesuite.saf.utils.AsyncTaskExecutor;
 
-import com.jd.mrd.jingming.logcat.data.ColorScheme;
-import com.jd.mrd.jingming.logcat.data.FilterAdapter;
-import com.jd.mrd.jingming.logcat.data.LogFileAdapter;
-import com.jd.mrd.jingming.logcat.data.LogLine;
-import com.jd.mrd.jingming.logcat.data.LogLineAdapter;
-import com.jd.mrd.jingming.logcat.data.SavedLog;
-import com.jd.mrd.jingming.logcat.data.SearchCriteria;
-import com.jd.mrd.jingming.logcat.data.SendLogDetails;
-import com.jd.mrd.jingming.logcat.data.SenderAppAdapter;
-import com.jd.mrd.jingming.logcat.data.SortedFilterArrayAdapter;
-import com.jd.mrd.jingming.logcat.data.TagAndProcessIdAdapter;
-import com.jd.mrd.jingming.logcat.db.CatlogDBHelper;
-import com.jd.mrd.jingming.logcat.db.FilterItem;
-import com.jd.mrd.jingming.logcat.helper.BuildHelper;
-import com.jd.mrd.jingming.logcat.helper.DialogHelper;
-import com.jd.mrd.jingming.logcat.helper.PreferenceHelper;
-import com.jd.mrd.jingming.logcat.helper.SaveLogHelper;
-import com.jd.mrd.jingming.logcat.helper.ServiceHelper;
-import com.jd.mrd.jingming.logcat.helper.UpdateHelper;
-import com.jd.mrd.jingming.logcat.intents.Intents;
-import com.jd.mrd.jingming.logcat.reader.LogcatReader;
-import com.jd.mrd.jingming.logcat.reader.LogcatReaderLoader;
 
 public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrollListener, 
         FilterListener, OnEditorActionListener, OnClickListener, OnLongClickListener {
@@ -243,10 +243,10 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         
         // handle an intent that was sent from an external application
         
-        if (intent != null && Intents.ACTION_LAUNCH.equals(intent.getAction())) {
+        if (intent != null && Constant.ACTION_LAUNCH.equals(intent.getAction())) {
             
-            String filter = intent.getStringExtra(Intents.EXTRA_FILTER);
-            String level = intent.getStringExtra(Intents.EXTRA_LEVEL);
+            String filter = intent.getStringExtra(Constant.EXTRA_FILTER);
+            String level = intent.getStringExtra(Constant.EXTRA_LEVEL);
             
             if (!TextUtils.isEmpty(filter)) {
                 silentlySetSearchText(filter);
@@ -293,7 +293,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         doAfterInitialMessage(intent);
         
         // launched from the widget or notification
-        if (intent != null && !Intents.ACTION_LAUNCH.equals(intent.getAction()) && intent.hasExtra("filename")) {
+        if (intent != null && !Constant.ACTION_LAUNCH.equals(intent.getAction()) && intent.hasExtra("filename")) {
             String filename = intent.getStringExtra("filename");
             openLog(filename);
         }
