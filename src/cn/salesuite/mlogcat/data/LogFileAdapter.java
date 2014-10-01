@@ -1,6 +1,5 @@
 package cn.salesuite.mlogcat.data;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 import cn.salesuite.mlogcat.R;
 import cn.salesuite.mlogcat.helper.SaveLogHelper;
+import cn.salesuite.saf.utils.JodaUtils;
 
 
 public class LogFileAdapter extends ArrayAdapter<CharSequence> {
@@ -24,10 +24,14 @@ public class LogFileAdapter extends ArrayAdapter<CharSequence> {
 	private boolean multiMode;
 	private boolean[] checkedItems;
 	private int resId;
+	private Context mContext;
+	private LayoutInflater mInflater;
 	
 	public LogFileAdapter(Context context, List<CharSequence> objects, int checked, boolean multiMode) {
 		
 		super(context, -1, objects);
+		this.mContext = context;
+		this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.objects = objects;
 		this.checked = checked;
 		this.multiMode = multiMode;
@@ -40,11 +44,8 @@ public class LogFileAdapter extends ArrayAdapter<CharSequence> {
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
 		
-		Context context = parent.getContext();
-		
 		if (view == null) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = inflater.inflate(resId, parent, false);
+			view = mInflater.inflate(resId, parent, false);
 		}
 		
 		CheckedTextView text1 = (CheckedTextView) view.findViewById(android.R.id.text1);
@@ -54,7 +55,6 @@ public class LogFileAdapter extends ArrayAdapter<CharSequence> {
 
 		text1.setText(filename);
 		
-		
 		if (multiMode) {
 			text1.setChecked(checkedItems[position]);
 		} else {
@@ -62,9 +62,7 @@ public class LogFileAdapter extends ArrayAdapter<CharSequence> {
 		}
 		
 		Date lastModified = SaveLogHelper.getLastModifiedDate(filename.toString());
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(USER_READABLE_DATE_FORMAT);
-		
-		text2.setText(simpleDateFormat.format(lastModified));
+		text2.setText(JodaUtils.format(lastModified, USER_READABLE_DATE_FORMAT));
 		
 		return view;
 	}

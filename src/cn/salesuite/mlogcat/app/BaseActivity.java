@@ -19,10 +19,10 @@ import cn.salesuite.saf.log.L;
  *
  */
 public class BaseActivity extends SAFActivity {
-
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        
+		
 		L.init(this);
 	}
 	

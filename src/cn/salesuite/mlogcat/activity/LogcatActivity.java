@@ -823,7 +823,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         List<CharSequence> filenames = new ArrayList<CharSequence>(SaveLogHelper.getLogFilenames());
         
         if (filenames.isEmpty()) {
-            Toast.makeText(this, R.string.no_saved_logs, Toast.LENGTH_SHORT).show();
+            toast(R.string.no_saved_logs);
             return;            
         }
         

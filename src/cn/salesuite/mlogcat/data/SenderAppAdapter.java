@@ -27,9 +27,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.salesuite.mlogcat.R;
 import cn.salesuite.mlogcat.utils.UtilLogger;
+import cn.salesuite.saf.utils.ToastUtil;
 
 /**
  * Adapter that shows any apps in the system that respond to Intent.ACTION_SEND intents.  Filters out any apps in
@@ -65,7 +65,8 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 			ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE); 
 			
 			clipboard.setText(body);
-			Toast.makeText(mContext, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+//			Toast.makeText(mContext, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+			ToastUtil.showShort(mContext, R.string.copied_to_clipboard);
 		} else {
 		
 			ComponentName name= new ComponentName(activity.applicationInfo.packageName, activity.name);
