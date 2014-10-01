@@ -18,7 +18,7 @@
 			android:summary="@string/pref_show_timestamp_summary"
 			android:persistent="true" android:defaultValue="true"/>
 			
-		<com.jd.mrd.jingming.logcat.widget.MockDisabledListPreference android:key="@string/pref_theme"
+		<cn.salesuite.mlogcat.ui.MockDisabledListPreference android:key="@string/pref_theme"
 			android:title="@string/pref_theme_title" android:persistent="true"
 			android:entries="@array/pref_theme_choices_names" android:entryValues="@array/pref_theme_choices_values"
 			android:defaultValue="@string/pref_theme_choice_dark_value" />		
@@ -27,7 +27,7 @@
 	
 	<PreferenceCategory android:title="@string/pref_cat_configuration">
 	    		
-		<com.jd.mrd.jingming.logcat.widget.MultipleChoicePreference android:key="@string/pref_buffer"	
+		<cn.salesuite.mlogcat.ui.MultipleChoicePreference android:key="@string/pref_buffer"	
 			android:title="@string/pref_buffer_title" android:persistent="true"
 			android:entries="@array/pref_buffer_choices" android:entryValues="@array/pref_buffer_choice_values"
 			android:defaultValue="@string/pref_buffer_choice_main_value" />	
@@ -40,13 +40,13 @@
 	</PreferenceCategory>
 	
 	<PreferenceCategory android:title="@string/pref_cat_advanced">
-		<com.jd.mrd.jingming.logcat.widget.NonnegativeIntegerEditTextPreference 
+		<cn.salesuite.mlogcat.ui.NonnegativeIntegerEditTextPreference 
 			android:key="@string/pref_log_line_period"
 			android:title="@string/pref_log_line_period_title"
 			android:summary="@string/pref_log_line_period_summary"
 			android:persistent="true" android:defaultValue="@string/pref_log_line_period_default"/>
 			
-		<com.jd.mrd.jingming.logcat.widget.NonnegativeIntegerEditTextPreference 
+		<cn.salesuite.mlogcat.ui.NonnegativeIntegerEditTextPreference 
 			android:key="@string/pref_display_limit"
 			android:title="@string/pref_display_limit_title"
 			android:summary="@string/pref_display_limit_summary"
@@ -62,7 +62,7 @@
 	
 	<PreferenceCategory android:title="@string/about">
 	    
-	     <com.jd.mrd.jingming.logcat.widget.NoPopupDialogPreference android:key="@string/pref_about"
+	     <cn.salesuite.mlogcat.ui.NoPopupDialogPreference android:key="@string/pref_about"
 	         android:title="@string/about_catlog"
 	         />
 	    
