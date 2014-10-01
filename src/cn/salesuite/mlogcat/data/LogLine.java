@@ -147,6 +147,7 @@ public class LogLine {
 		return logLine;
 		
 	}
+	
 	public static int convertCharToLogLevel(char logLevelChar) {
 		
 		switch (logLevelChar) {

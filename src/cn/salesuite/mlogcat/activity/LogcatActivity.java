@@ -395,46 +395,44 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         
-    	// TODO:
-//        switch (item.getItemId()) {
-//        case R.id.menu_log_level:
-//            showLogLevelDialog();
-//            return true;
-//        case R.id.menu_open_log:
-//            showOpenLogDialog();
-//            return true;
-//        case R.id.menu_save_log:
-//        case R.id.menu_save_as_log:
-//            showSaveLogDialog();
-//            return true;
-//        case R.id.menu_record_log:
-//            showRecordLogDialog();
-//            return true;
-//        case R.id.menu_stop_recording_log:
-//            DialogHelper.stopRecordingLog(this);
-//            return true;            
-//        case R.id.menu_send_log:
-//            showSendLogDialog();
-//            return true;
-//        case R.id.menu_main_log:
-//            startUpMainLog();
-//            return true;
-//        case R.id.menu_delete_saved_log:
-//            startDeleteSavedLogsDialog();
-//            return true;
-//        case R.id.menu_settings:
-//            startSettingsActivity();
-//            return true;
-//        case R.id.menu_crazy_logger_service:
-//            ServiceHelper.startOrStopCrazyLogger(this);
-//            return true;
-//        case R.id.menu_partial_select:
-//            startPartialSelectMode();
-//            return true;
-//        case R.id.menu_filters:
-//            showFiltersDialog();
-//            return true;
-//        }
+    	int id = item.getItemId();
+    	if (id == R.id.menu_log_level) {
+          showLogLevelDialog();
+          return true;
+    	} else if (id == R.id.menu_open_log) {
+          showOpenLogDialog();
+          return true;
+    	} else if (id == R.id.menu_save_log || id == R.id.menu_save_as_log) {
+    		showSaveLogDialog();
+            return true;
+      	} else if (id == R.id.menu_record_log) {
+      		showRecordLogDialog();
+            return true;
+      	} else if (id == R.id.menu_stop_recording_log) {
+      		DialogHelper.stopRecordingLog(this);
+            return true;
+      	} else if (id == R.id.menu_send_log) {
+      		showSendLogDialog();
+            return true;
+      	} else if (id == R.id.menu_main_log) {
+      		startUpMainLog();
+            return true;
+      	} else if (id == R.id.menu_delete_saved_log) {
+      		startDeleteSavedLogsDialog();
+            return true;
+      	} else if (id == R.id.menu_settings) {
+      		startSettingsActivity();
+            return true;
+      	} else if (id == R.id.menu_crazy_logger_service) {
+      		ServiceHelper.startOrStopCrazyLogger(this);
+            return true;
+      	} else if (id == R.id.menu_partial_select) {
+      		startPartialSelectMode();
+            return true;
+      	} else if (id == R.id.menu_filters) {
+      		showFiltersDialog();
+            return true;
+      	}
         return false;
     }
 
