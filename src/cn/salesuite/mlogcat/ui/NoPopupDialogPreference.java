@@ -25,7 +25,4 @@ public class NoPopupDialogPreference extends DialogPreference {
 	protected void showDialog(Bundle state) {
 		// do nothing
 	}
-
-	
-	
 }

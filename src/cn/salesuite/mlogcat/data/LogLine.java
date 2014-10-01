@@ -5,9 +5,8 @@ import java.util.regex.Pattern;
 
 import android.text.TextUtils;
 import android.util.Log;
-
 import cn.salesuite.mlogcat.utils.LogLineAdapterUtil;
-import cn.salesuite.mlogcat.utils.UtilLogger;
+import cn.salesuite.saf.log.L;
 
 
 public class LogLine {
@@ -28,9 +27,7 @@ public class LogLine {
 			// optional weird number that only occurs on ZTE blade
 			"(?:\\*\\s*\\d+)?" +
 			"\\): ");
-	
-	private static UtilLogger log = new UtilLogger(LogLine.class);
-	
+
 	private int logLevel;
 	private String tag;
 	private String logOutput;
@@ -38,6 +35,10 @@ public class LogLine {
 	private String timestamp;
 	private boolean expanded = false;
 	private boolean highlighted = false;
+	
+	static {
+		L.init(LogLine.class);
+	}
 	
 	public CharSequence getOriginalLine() {
 		
@@ -138,7 +139,7 @@ public class LogLine {
 			logLine.setLogOutput(originalLine.substring(matcher.end()));
 			
 		} else {
-			log.d("Line doesn't match pattern: %s", originalLine);
+			L.d("Line doesn't match pattern: %s", originalLine);
 			logLine.setLogOutput(originalLine);
 			logLine.setLogLevel(-1);
 		}

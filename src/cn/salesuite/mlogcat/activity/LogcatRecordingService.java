@@ -28,7 +28,7 @@ import cn.salesuite.mlogcat.reader.LogcatReader;
 import cn.salesuite.mlogcat.reader.LogcatReaderLoader;
 import cn.salesuite.mlogcat.utils.ArrayUtil;
 import cn.salesuite.mlogcat.utils.LogLineAdapterUtil;
-import cn.salesuite.mlogcat.utils.UtilLogger;
+import cn.salesuite.saf.log.L;
 
 
 /**
@@ -46,10 +46,6 @@ public class LogcatRecordingService extends IntentService {
 	public static final String EXTRA_LOADER = "loader";
 	public static final String EXTRA_QUERY_FILTER = "filter";
 	public static final String EXTRA_LEVEL = "level";
-	
-	
-	private static UtilLogger log = new UtilLogger(LogcatRecordingService.class);
-
 	private LogcatReader reader;
 
 	private NotificationManager mNM;
@@ -63,7 +59,7 @@ public class LogcatRecordingService extends IntentService {
 		
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			log.d("onReceive()");
+			L.d("onReceive()");
 			
 			// received broadcast to kill service
 			killProcess();
@@ -82,7 +78,7 @@ public class LogcatRecordingService extends IntentService {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		log.d("onCreate()");
+		L.init(LogcatRecordingService.class);
 		
 		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		
@@ -98,14 +94,14 @@ public class LogcatRecordingService extends IntentService {
 			mStopForeground = getClass().getMethod("stopForeground", boolean.class);
 		} catch (NoSuchMethodException e) {
 			// Running on an older platform.
-			log.d(e,"running on older platform; couldn't find startForeground method");
+			L.d("running on older platform; couldn't find startForeground method");
 			mStartForeground = mStopForeground = null;
 		}
 		try {
 			mSetForeground = getClass().getMethod("setForeground", boolean.class);
 		} catch (NoSuchMethodException e) {
 			// running on newer platform
-			log.d(e,"running on newer platform; couldn't find setForeground method");
+			L.d("running on newer platform; couldn't find setForeground method");
 			mSetForeground = null;
 		}
 
@@ -127,7 +123,7 @@ public class LogcatRecordingService extends IntentService {
 				makeToast(R.string.log_recording_started, Toast.LENGTH_SHORT);
 			}
 		} catch (IOException e) {
-			log.d(e, "");
+			L.d(e);
 		}
 		
 	}
@@ -135,7 +131,6 @@ public class LogcatRecordingService extends IntentService {
 
 	@Override
 	public void onDestroy() {
-		log.d("onDestroy()");
 		super.onDestroy();
 		killProcess();
 
@@ -152,7 +147,6 @@ public class LogcatRecordingService extends IntentService {
     // platform.
     @Override
     public void onStart(Intent intent, int startId) {
-    	log.d("onStart()");
     	super.onStart(intent, startId);
         handleCommand(intent);
     }
@@ -199,10 +193,10 @@ public class LogcatRecordingService extends IntentService {
 	            mStartForeground.invoke(this, Integer.valueOf(id), notification);
 	        } catch (InvocationTargetException e) {
 	            // Should not happen.
-	            log.d(e, "Unable to invoke startForeground");
+	            L.d("Unable to invoke startForeground");
 	        } catch (IllegalAccessException e) {
 	            // Should not happen.
-	            log.d(e, "Unable to invoke startForeground");
+	            L.d("Unable to invoke startForeground");
 	        }
 	        return;
 	    }
@@ -213,10 +207,10 @@ public class LogcatRecordingService extends IntentService {
 				mSetForeground.invoke(this, Boolean.TRUE);
 			} catch (IllegalAccessException e) {
 				// Should not happen.
-	            log.d(e, "Unable to invoke setForeground");
+	            L.d("Unable to invoke setForeground");
 			} catch (InvocationTargetException e) {
 				// Should not happen.
-	            log.d(e, "Unable to invoke setForeground");
+	            L.d("Unable to invoke setForeground");
 			}
 	    }
 	    mNM.notify(id, notification);
@@ -233,10 +227,10 @@ public class LogcatRecordingService extends IntentService {
 	            mStopForeground.invoke(this, Boolean.TRUE);
 	        } catch (InvocationTargetException e) {
 	            // Should not happen.
-	            log.d(e, "Unable to invoke stopForeground");
+	            L.d("Unable to invoke stopForeground");
 	        } catch (IllegalAccessException e) {
 	            // Should not happen.
-	            log.d(e, "Unable to invoke stopForeground");
+	            L.d("Unable to invoke stopForeground");
 	        }
 	        return;
 	    }
@@ -249,22 +243,21 @@ public class LogcatRecordingService extends IntentService {
 				mSetForeground.invoke(this, Boolean.FALSE);
 			} catch (IllegalAccessException e) {
 				// Should not happen.
-	            log.d(e, "Unable to invoke setForeground");
+	            L.d("Unable to invoke setForeground");
 			} catch (InvocationTargetException e) {
 				// Should not happen.
-	            log.d(e, "Unable to invoke setForeground");
+	            L.d("Unable to invoke setForeground");
 			}
 	    }
 	}
 
 	protected void onHandleIntent(Intent intent) {
-		log.d("onHandleIntent()");
 		handleIntent(intent);
 	}
 	
 	private void handleIntent(Intent intent) {
 		
-		log.d("Starting up %s now with intent: %s", LogcatRecordingService.class.getSimpleName(), intent);
+		L.d("Starting up %s now with intent: %s", LogcatRecordingService.class.getSimpleName(), intent);
 		
 		String filename = intent.getStringExtra(EXTRA_FILENAME);
 		String queryText = intent.getStringExtra(EXTRA_QUERY_FILTER);
@@ -307,10 +300,10 @@ public class LogcatRecordingService extends IntentService {
 				}
 			}
 		} catch (IOException e) {
-			log.e(e, "unexpected exception");
+			L.e("unexpected exception");
 		} finally {
 			killProcess();
-			log.d("CatlogService ended");
+			L.d("CatlogService ended");
 			
 			boolean logSaved = SaveLogHelper.saveLog(stringBuilder, filename);
 			

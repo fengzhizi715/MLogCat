@@ -5,11 +5,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ListView;
 
-import cn.salesuite.mlogcat.utils.UtilLogger;
-
 public class ExceptionCatchingListView extends ListView {
-
-	private static UtilLogger log = new UtilLogger(ExceptionCatchingListView.class);
 	
 	public ExceptionCatchingListView(Context context, AttributeSet attrs,
 			int defStyle) {
@@ -29,7 +25,6 @@ public class ExceptionCatchingListView extends ListView {
 		try {
 			return super.onTouchEvent(ev);
 		} catch (Exception e) {
-			log.d(e, "");
 			return false;
 		}
 	}

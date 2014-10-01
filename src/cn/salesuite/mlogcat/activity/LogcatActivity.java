@@ -89,7 +89,7 @@ import cn.salesuite.saf.utils.AsyncTaskExecutor;
 
 
 public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrollListener, 
-        FilterListener, OnEditorActionListener, OnLongClickListener {
+        FilterListener, OnEditorActionListener {
     
     private static final int REQUEST_CODE_SETTINGS = 1;
     
@@ -384,7 +384,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         }
     }
     
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -1505,7 +1504,15 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
 			}
 
 		});
-		clearButton.setOnLongClickListener(this);
+		clearButton.setOnLongClickListener(new OnLongClickListener(){
+
+			@Override
+			public boolean onLongClick(View v) {
+		        startUpMainLog();
+		        return true;
+			}
+			
+		});
 		expandButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1721,14 +1728,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         Filter filter = adapter.getFilter();
 
         filter.filter(filterText, this);
-        
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        // clear button long-pressed, undo clear
-        startUpMainLog();
-        return true;
         
     }
     

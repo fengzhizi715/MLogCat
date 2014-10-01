@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,13 +18,12 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import cn.salesuite.mlogcat.R;
+import cn.salesuite.mlogcat.app.BaseActivity;
 import cn.salesuite.mlogcat.helper.PackageHelper;
-import cn.salesuite.mlogcat.utils.UtilLogger;
+import cn.salesuite.saf.log.L;
 
 
-public class AboutActivity extends Activity implements OnClickListener {
-	
-	private static UtilLogger log = new UtilLogger(AboutActivity.class);
+public class AboutActivity extends BaseActivity implements OnClickListener {
 	
 	private Button okButton;
 	private WebView aboutWebView;
@@ -94,7 +92,7 @@ public class AboutActivity extends Activity implements OnClickListener {
 				sb.append(buff.readLine()).append("\n");
 			}
 		} catch (IOException e) {
-			log.e(e, "This should not happen");
+			L.e("This should not happen");
 		}
 		
 		return sb.toString();
@@ -120,7 +118,7 @@ public class AboutActivity extends Activity implements OnClickListener {
 
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-			log.d("shouldOverrideUrlLoading");
+			L.d("shouldOverrideUrlLoading");
 			
 			// XXX hack to make the webview go to an external url if the hyperlink is 
 			// in my own HTML file - otherwise it says "Page not available" because I'm not calling
