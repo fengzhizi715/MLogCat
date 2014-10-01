@@ -89,7 +89,7 @@ import cn.salesuite.saf.utils.AsyncTaskExecutor;
 
 
 public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrollListener, 
-        FilterListener, OnEditorActionListener, OnClickListener, OnLongClickListener {
+        FilterListener, OnEditorActionListener, OnLongClickListener {
     
     private static final int REQUEST_CODE_SETTINGS = 1;
     
@@ -102,8 +102,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
   // id for context menu entry
   private static final int CONTEXT_MENU_FILTER_ID = 0;
   private static final int CONTEXT_MENU_COPY_ID = 1;
-    
-//    private static UtilLogger log = new UtilLogger(LogcatActivity.class);
     
     private View backgroundLayout, mainFilenameLayout, clearButton, expandButton, pauseButton;
     private AutoCompleteTextView searchEditText;
@@ -1454,7 +1452,18 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         searchEditText = (AutoCompleteTextView) findViewById(R.id.main_edit_text);
         searchEditText.addTextChangedListener(this);
         searchEditText.setOnEditorActionListener(this);
-        searchEditText.setOnClickListener(this);
+        searchEditText.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				if (searchEditText != null && searchEditText.length() > 0) {
+					// I think it's intuitive to click an edit text and have all
+					// the text selected
+					searchEditText.setSelection(0, searchEditText.length());
+				}
+			}
+        	
+        });
         
         searchEditText.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -1481,11 +1490,41 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         expandButtonImage = (ImageView) findViewById(R.id.main_expand_button_image);
         pauseButtonImage = (ImageView) findViewById(R.id.main_pause_button_image);
         
-        
-        for (View view : new View[]{clearButton, expandButton, pauseButton}) {
-            view.setOnClickListener(this);
-        }
-        clearButton.setOnLongClickListener(this);
+		clearButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				unfocusEditText();
+				if (adapter != null) {
+					adapter.clear();
+				}
+				if (searchEditText != null) {
+					searchEditText.setText("");
+				}
+				toast(R.string.log_cleared);
+			}
+
+		});
+		clearButton.setOnLongClickListener(this);
+		expandButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				unfocusEditText();
+				expandOrCollapseAll(true);
+			}
+
+		});
+
+		pauseButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				unfocusEditText();
+				pauseOrUnpause();
+			}
+
+		});
         
         filenameTextView = (TextView) findViewById(R.id.main_filename_text_view);
         mainFilenameLayout = findViewById(R.id.main_filename_linear_layout);
@@ -1690,39 +1729,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         // clear button long-pressed, undo clear
         startUpMainLog();
         return true;
-        
-    }
-    
-    @Override
-    public void onClick(View v) {
-
-    	//TODO:
-//        switch (v.getId()) {
-//            case R.id.main_edit_text:
-//                if (searchEditText != null && searchEditText.length() > 0) {
-//                    // I think it's intuitive to click an edit text and have all the text selected
-//                    searchEditText.setSelection(0, searchEditText.length());
-//                }
-//                break;
-//            case R.id.main_clear_button:
-//                unfocusEditText();
-//                if (adapter != null) {
-//                    adapter.clear();
-//                }
-//                if (searchEditText != null) {
-//                    searchEditText.setText("");
-//                }
-//                Toast.makeText(this, R.string.log_cleared, Toast.LENGTH_LONG).show();
-//                break;
-//            case R.id.main_more_button:
-//                unfocusEditText();
-//                expandOrCollapseAll(true);
-//                break;
-//            case R.id.main_pause_button:
-//                unfocusEditText();
-//                pauseOrUnpause();
-//                break;
-//        }
         
     }
     
