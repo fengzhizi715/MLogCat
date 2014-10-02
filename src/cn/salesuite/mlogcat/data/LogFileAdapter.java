@@ -14,7 +14,6 @@ import cn.salesuite.mlogcat.R;
 import cn.salesuite.mlogcat.helper.SaveLogHelper;
 import cn.salesuite.saf.utils.JodaUtils;
 
-
 public class LogFileAdapter extends ArrayAdapter<CharSequence> {
 
 	public static final String USER_READABLE_DATE_FORMAT = "MMM dd, yyyy hh:mm aaa";
@@ -26,6 +25,7 @@ public class LogFileAdapter extends ArrayAdapter<CharSequence> {
 	private int resId;
 	private Context mContext;
 	private LayoutInflater mInflater;
+    private ViewHolder holder;
 	
 	public LogFileAdapter(Context context, List<CharSequence> objects, int checked, boolean multiMode) {
 		
@@ -42,29 +42,31 @@ public class LogFileAdapter extends ArrayAdapter<CharSequence> {
 	}
 
 	@Override
-	public View getView(int position, View view, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		if (view == null) {
-			view = mInflater.inflate(resId, parent, false);
+        if (convertView != null) {
+			holder = (ViewHolder) convertView.getTag();
+		} else {
+			convertView = mInflater.inflate(resId, parent, false);
+			holder = new ViewHolder();
+			holder.text1 = (CheckedTextView) convertView.findViewById(android.R.id.text1);
+			holder.text2 = (TextView) convertView.findViewById(android.R.id.text2);
+			convertView.setTag(holder);
 		}
-		
-		CheckedTextView text1 = (CheckedTextView) view.findViewById(android.R.id.text1);
-		TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-		
+        
 		CharSequence filename = objects.get(position);
 
-		text1.setText(filename);
-		
+		holder.text1.setText(filename);
 		if (multiMode) {
-			text1.setChecked(checkedItems[position]);
+			holder.text1.setChecked(checkedItems[position]);
 		} else {
-			text1.setChecked(checked == position);
+			holder.text1.setChecked(checked == position);
 		}
-		
+
 		Date lastModified = SaveLogHelper.getLastModifiedDate(filename.toString());
-		text2.setText(JodaUtils.format(lastModified, USER_READABLE_DATE_FORMAT));
+		holder.text2.setText(JodaUtils.format(lastModified, USER_READABLE_DATE_FORMAT));
 		
-		return view;
+		return convertView;
 	}
 	
 	public void checkOrUncheck(int position) {
@@ -75,4 +77,9 @@ public class LogFileAdapter extends ArrayAdapter<CharSequence> {
 	public boolean[] getCheckedItems() {
 		return checkedItems;
 	}
+	
+    class ViewHolder {
+        public CheckedTextView text1;
+        public TextView text2;
+    }
 }

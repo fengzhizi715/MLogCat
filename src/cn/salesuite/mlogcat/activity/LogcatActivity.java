@@ -86,6 +86,8 @@ import cn.salesuite.mlogcat.utils.UtilLogger;
 import cn.salesuite.saf.inject.annotation.InjectView;
 import cn.salesuite.saf.log.L;
 import cn.salesuite.saf.utils.AsyncTaskExecutor;
+import cn.salesuite.saf.utils.SAFUtil;
+import cn.salesuite.saf.view.LightDialog;
 
 
 public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrollListener, 
@@ -1259,7 +1261,12 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         ArrayAdapter<CharSequence> dropdownAdapter = new LogFileAdapter(
                 this, filenames, logToSelect, false);
         
-        Builder builder = new Builder(this);
+        Builder builder = null;
+		if (SAFUtil.isICSOrHigher())
+			builder = new Builder(this, 3);
+		else {
+			builder = new Builder(this);
+		}
         
         builder.setTitle(R.string.open_log)
             .setCancelable(true)
