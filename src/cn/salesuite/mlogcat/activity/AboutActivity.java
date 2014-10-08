@@ -29,12 +29,16 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
 	@InjectView
 	Button okButton;
 	
-	private WebView aboutWebView;
-
-	private ProgressBar progressBar;
-	private Handler handler = new MyHandler(this);
-	private View topPanel;
+	@InjectView
+	View topPanel;
 	
+	@InjectView
+	WebView aboutWebView;
+
+	@InjectView
+	ProgressBar progressBar;
+	
+	Handler handler = new MyHandler(this);
 	
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -43,18 +47,10 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.logcat_about);
 
-		topPanel = findViewById(R.id.topPanel);
 		topPanel.setVisibility(View.GONE);
-
 		okButton.setOnClickListener(this);
 		okButton.setVisibility(View.GONE);
-				
-		aboutWebView = (WebView) findViewById(R.id.aboutTextWebView);
-
 		aboutWebView.setVisibility(View.GONE);
-		
-		progressBar = (ProgressBar) findViewById(R.id.aboutProgressBar);
-
 		aboutWebView.setBackgroundColor(0);
 		
 		aboutWebView.setWebViewClient(new AboutWebClient());

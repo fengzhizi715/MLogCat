@@ -87,6 +87,7 @@ import cn.salesuite.saf.inject.annotation.InjectView;
 import cn.salesuite.saf.log.L;
 import cn.salesuite.saf.utils.AsyncTaskExecutor;
 import cn.salesuite.saf.utils.SAFUtil;
+import cn.salesuite.saf.utils.StringHelper;
 
 public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrollListener, 
         FilterListener, OnEditorActionListener {
@@ -99,9 +100,9 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
     // how many suggestions to keep in the autosuggestions text
     private static final int MAX_NUM_SUGGESTIONS = 1000;
 
-  // id for context menu entry
-  private static final int CONTEXT_MENU_FILTER_ID = 0;
-  private static final int CONTEXT_MENU_COPY_ID = 1;
+    // id for context menu entry
+    private static final int CONTEXT_MENU_FILTER_ID = 0;
+    private static final int CONTEXT_MENU_COPY_ID = 1;
     
     private View backgroundLayout, mainFilenameLayout, clearButton, expandButton, pauseButton;
     private AutoCompleteTextView searchEditText;
@@ -113,7 +114,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
     private View borderView1, borderView2, borderView3, borderView4;
     
     @InjectView
-    private ExceptionCatchingListView listView;
+    ExceptionCatchingListView listView;
     
     private int firstVisibleItem = -1;
     private boolean autoscrollToBottom = true;
@@ -246,12 +247,11 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
             String filter = intent.getStringExtra(Constant.EXTRA_FILTER);
             String level = intent.getStringExtra(Constant.EXTRA_LEVEL);
             
-            if (!TextUtils.isEmpty(filter)) {
+            if (StringHelper.isNotBlank(filter)) {
                 silentlySetSearchText(filter);
             }
             
-            
-            if (!TextUtils.isEmpty(level)) {
+            if (StringHelper.isNotBlank(level)) {
                 CharSequence[] logLevels = getResources().getStringArray(R.array.log_levels_values);
                 int logLevelLimit = ArrayUtil.indexOf(logLevels, level.toUpperCase(Locale.US));
                 
@@ -305,11 +305,11 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         PreferenceHelper.clearCache();
         
         collapsedMode = !PreferenceHelper.getExpandedByDefaultPreference(getApplicationContext());
-        
 
         if (requestCode == REQUEST_CODE_SETTINGS && resultCode == RESULT_OK) {
             onSettingsActivityResult(data);
         }
+        
         adapter.notifyDataSetChanged();
         updateBackgroundColor();
         updateDisplayedFilename();
@@ -495,11 +495,12 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         return super.onPrepareOptionsMenu(menu);
     }
 
-  @Override
-  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-    menu.add(0, CONTEXT_MENU_FILTER_ID, 0, R.string.filter_choice);
-    menu.add(0, CONTEXT_MENU_COPY_ID, 0, R.string.copy_to_clipboard);
-  }
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenu.ContextMenuInfo menuInfo) {
+		menu.add(0, CONTEXT_MENU_FILTER_ID, 0, R.string.filter_choice);
+		menu.add(0, CONTEXT_MENU_COPY_ID, 0, R.string.copy_to_clipboard);
+	}
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
@@ -527,54 +528,66 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         return false;
     }
   
-  private void showSearchByDialog(final LogLine logLine) {
-      List<CharSequence> choices = Arrays.<CharSequence>asList(getResources().getStringArray(R.array.filter_choices));
-      List<CharSequence> choicesSubtexts = Arrays.<CharSequence>asList(logLine.getTag(), Integer.toString(logLine.getProcessId()));
+	private void showSearchByDialog(final LogLine logLine) {
+		List<CharSequence> choices = Arrays
+				.<CharSequence> asList(getResources().getStringArray(
+						R.array.filter_choices));
+		List<CharSequence> choicesSubtexts = Arrays.<CharSequence> asList(
+				logLine.getTag(), Integer.toString(logLine.getProcessId()));
 
-      int tagColor = LogLineAdapterUtil.getOrCreateTagColor(this, logLine.getTag());
+		int tagColor = LogLineAdapterUtil.getOrCreateTagColor(this,
+				logLine.getTag());
 
-      TagAndProcessIdAdapter textAndSubtextAdapter = new TagAndProcessIdAdapter(this, choices, choicesSubtexts, tagColor, -1);
+		TagAndProcessIdAdapter textAndSubtextAdapter = new TagAndProcessIdAdapter(
+				this, choices, choicesSubtexts, tagColor, -1);
 
-      new AlertDialog.Builder(this)
-              .setCancelable(true)
-              .setTitle(R.string.filter_choice)
-              .setIcon(R.drawable.ic_search_category_default)
-              .setSingleChoiceItems(textAndSubtextAdapter, -1, new DialogInterface.OnClickListener() {
+		new AlertDialog.Builder(this)
+				.setCancelable(true)
+				.setTitle(R.string.filter_choice)
+				.setIcon(R.drawable.ic_search_category_default)
+				.setSingleChoiceItems(textAndSubtextAdapter, -1,
+						new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
 
-                  if (which == 0) { // tag
-                    // determine the right way to phrase this tag query - e.g.
-                    // tag:myTag or tag:"my tag"
-                    String tagQuery = (logLine.getTag().contains(" "))
-                    ? ('"' + logLine.getTag() + '"')
-                    : logLine.getTag();
-                    silentlySetSearchText(SearchCriteria.TAG_KEYWORD + tagQuery);
-                  }
-                  else { // which == 1, i.e. process id
-                    silentlySetSearchText(SearchCriteria.PID_KEYWORD + logLine.getProcessId());
-                  }
+								if (which == 0) { // tag
+									// determine the right way to phrase this
+									// tag query - e.g.
+									// tag:myTag or tag:"my tag"
+									String tagQuery = (logLine.getTag()
+											.contains(" ")) ? ('"' + logLine
+											.getTag() + '"') : logLine.getTag();
+									silentlySetSearchText(SearchCriteria.TAG_KEYWORD
+											+ tagQuery);
+								} else { // which == 1, i.e. process id
+									silentlySetSearchText(SearchCriteria.PID_KEYWORD
+											+ logLine.getProcessId());
+								}
 
-                  // put the cursor at the end
-                  searchEditText.setSelection(searchEditText.length());
-                  dialog.dismiss();
+								// put the cursor at the end
+								searchEditText.setSelection(searchEditText
+										.length());
+								dialog.dismiss();
 
-                }
-              })
-              .show();
-  }
+							}
+						}).show();
+	}
 
-  private void showRecordLogDialog() {
+	private void showRecordLogDialog() {
 
-    // start up the dialog-like activity
-    String[] suggestions = ArrayUtil.toArray(new ArrayList<String>(searchSuggestionsSet), String.class);
+		// start up the dialog-like activity
+		String[] suggestions = ArrayUtil.toArray(new ArrayList<String>(
+				searchSuggestionsSet), String.class);
 
-    Intent intent = new Intent(LogcatActivity.this, ShowRecordLogDialogActivity.class);
-    intent.putExtra(ShowRecordLogDialogActivity.EXTRA_QUERY_SUGGESTIONS, suggestions);
-        
-    startActivity(intent);
-    }
+		Intent intent = new Intent(LogcatActivity.this,
+				ShowRecordLogDialogActivity.class);
+		intent.putExtra(ShowRecordLogDialogActivity.EXTRA_QUERY_SUGGESTIONS,
+				suggestions);
+
+		startActivity(intent);
+	}
 
     private void showFiltersDialog() {
         
@@ -1183,7 +1196,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
             return;
         }
         
-        AsyncTask<Void,Void,Boolean> saveTask = new AsyncTask<Void, Void, Boolean>(){
+        AsyncTaskExecutor.executeAsyncTask(new AsyncTask<Void, Void, Boolean>(){
 
             @Override
             protected Boolean doInBackground(Void... params) {
@@ -1208,10 +1221,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
             }
             
             
-        };
-        
-        saveTask.execute((Void)null);
-        
+        });
     }
 
     private void saveLog(final String filename) {
@@ -1220,7 +1230,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         
         final List<CharSequence> logLines = getCurrentLogAsListOfStrings();
         
-        AsyncTask<Void,Void,Boolean> saveTask = new AsyncTask<Void, Void, Boolean>(){
+        AsyncTaskExecutor.executeAsyncTask(new AsyncTask<Void, Void, Boolean>(){
 
             @Override
             protected Boolean doInBackground(Void... params) {
@@ -1243,10 +1253,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
             }
             
             
-        };
-        
-        saveTask.execute((Void)null);
-        
+        });
     }
 
     private void showOpenLogDialog() {
@@ -1607,9 +1614,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         });
     }
 
-    /**
-     * ������־���ļ�
-     */
     private void completePartialSelect() {
 
         if (!SaveLogHelper.checkSdCard(this)) {
@@ -1652,10 +1656,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         DialogHelper.showFilenameSuggestingDialog(this, editText, onClickListener, null, onCancelListener, R.string.save_log);
         
     }
-    
-    /**
-     * �����?
-     */
+
     private void cancelPartialSelect() {
         partialSelectMode = false;
         
@@ -1826,9 +1827,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         
         listView.setCacheColorHint(color);
         listView.setDivider(new ColorDrawable(color));
-        
     }
-    
 
     private void addToAutocompleteSuggestions(LogLine logLine) {
         // add the tags to the autocompletetextview
@@ -1992,6 +1991,5 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         public void setOnFinished(Runnable onFinished) {
             this.onFinished = onFinished;
         }
-
     }
 }

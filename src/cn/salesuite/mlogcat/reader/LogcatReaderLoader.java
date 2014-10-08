@@ -64,6 +64,7 @@ public class LogcatReaderLoader implements Parcelable {
 	public int describeContents() {
 		return 0;
 	}
+	
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(recordingMode ? 1 : 0);

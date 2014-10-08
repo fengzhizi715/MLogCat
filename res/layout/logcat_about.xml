@@ -55,13 +55,13 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/aboutProgressBar"
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true" />
 
     <WebView
-        android:id="@+id/aboutTextWebView"
+        android:id="@+id/aboutWebView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
