@@ -10,8 +10,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import android.os.AsyncTask;
-
-import cn.salesuite.mlogcat.utils.UtilLogger;
+import cn.salesuite.saf.log.L;
+import cn.salesuite.saf.utils.AsyncTaskExecutor;
 
 /**
  * Combines multipe buffered readers into a single reader that merges all input synchronously.
@@ -19,8 +19,6 @@ import cn.salesuite.mlogcat.utils.UtilLogger;
  *
  */
 public class MultipleLogcatReader extends AbsLogcatReader {
-	
-	private static UtilLogger log = new UtilLogger(MultipleLogcatReader.class);
 
 	private static final String DUMMY_NULL = new String("");
 	
@@ -30,6 +28,9 @@ public class MultipleLogcatReader extends AbsLogcatReader {
 	public MultipleLogcatReader(boolean recordingMode, 
 			Map<String,String> lastLines) throws IOException {
 		super(recordingMode);
+		
+		L.init(MultipleLogcatReader.class);
+		
 		// read from all three buffers at once
 		for (Entry<String,String> entry : lastLines.entrySet()) {
 			String logBuffer = entry.getKey();
@@ -48,7 +49,7 @@ public class MultipleLogcatReader extends AbsLogcatReader {
 				return value;
 			}
 		} catch (InterruptedException e) {
-			log.d(e, "");
+			L.d(e);
 		}
 		return null;
 	}
@@ -71,7 +72,7 @@ public class MultipleLogcatReader extends AbsLogcatReader {
 		}
 		
 		// do in background, because otherwise we might hang
-		new AsyncTask<Void, Void, Void>(){
+		AsyncTaskExecutor.executeAsyncTask(new AsyncTask<Void, Void, Void>() {
 
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -81,7 +82,7 @@ public class MultipleLogcatReader extends AbsLogcatReader {
 				queue.offer(DUMMY_NULL);
 				return null;
 			}
-		}.execute((Void)null);
+		});
 	}
 	
 	
@@ -113,11 +114,11 @@ public class MultipleLogcatReader extends AbsLogcatReader {
 					queue.put(line);
 				}
 			} catch (IOException e) {
-				log.d(e, "exception");
+				L.d(e);
 			} catch (InterruptedException e) {
-				log.d(e, "exception");
+				L.d(e);
 			}
-			log.d("thread died");
+			L.d("thread died");
 		}
 	}
 }

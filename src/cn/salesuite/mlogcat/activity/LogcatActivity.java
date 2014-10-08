@@ -87,7 +87,6 @@ import cn.salesuite.saf.inject.annotation.InjectView;
 import cn.salesuite.saf.log.L;
 import cn.salesuite.saf.utils.AsyncTaskExecutor;
 import cn.salesuite.saf.utils.SAFUtil;
-import cn.salesuite.saf.view.LightDialog;
 
 
 public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrollListener, 
