@@ -6,16 +6,16 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 
-import android.text.TextUtils;
 import cn.salesuite.mlogcat.helper.LogcatHelper;
 import cn.salesuite.mlogcat.helper.RuntimeHelper;
-import cn.salesuite.mlogcat.utils.UtilLogger;
+import cn.salesuite.saf.log.L;
 import cn.salesuite.saf.utils.SAFUtil;
+import cn.salesuite.saf.utils.StringHelper;
 
 
 public class SingleLogcatReader extends AbsLogcatReader {
 
-	private static UtilLogger log = new UtilLogger(SingleLogcatReader.class);
+//	private static UtilLogger log = new UtilLogger(SingleLogcatReader.class);
 	
 	private Process logcatProcess;
 	private BufferedReader bufferedReader;
@@ -26,6 +26,9 @@ public class SingleLogcatReader extends AbsLogcatReader {
 		super(recordingMode);
 		this.logBuffer = logBuffer;
 		this.lastLine = lastLine;
+		
+		L.init(SingleLogcatReader.class);
+		
 		init();
 	}
 
@@ -47,7 +50,7 @@ public class SingleLogcatReader extends AbsLogcatReader {
 	public void killQuietly() {
 		if (logcatProcess != null) {
 			RuntimeHelper.destroy(logcatProcess);
-			log.d("killed 1 logcat process");
+			L.d("killed 1 logcat process");
 		}
 		
 		// post-jellybean, we just kill the process, so there's no need
@@ -58,7 +61,7 @@ public class SingleLogcatReader extends AbsLogcatReader {
 			try {
 				bufferedReader.close();
 			} catch (IOException e) {
-				log.e(e, "unexpected exception");
+				L.e(e);
 			}
 		}
 	}
@@ -87,7 +90,7 @@ public class SingleLogcatReader extends AbsLogcatReader {
 	
 	private boolean isDatedLogLine(String line) {
 		// 18 is the size of the logcat timestamp
-		return (!TextUtils.isEmpty(line) && line.length() >= 18 && Character.isDigit(line.charAt(0)));
+		return (StringHelper.isNotBlank(line) && line.length() >= 18 && Character.isDigit(line.charAt(0)));
 	}
 
 

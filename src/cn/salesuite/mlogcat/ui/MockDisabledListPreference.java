@@ -40,6 +40,7 @@ public class MockDisabledListPreference extends ListPreference {
                 enableView(grp.getChildAt(index), enabled);
         }
     }
+    
     public void setEnabledAppearance( boolean enabled){
         mEnabledAppearance = enabled; 
         notifyChanged();
@@ -52,7 +53,6 @@ public class MockDisabledListPreference extends ListPreference {
     	} else {
     		super.onClick();
     	}
-    		
     }
     
     public void overrideOnClick(OnPreferenceClickListener onClickOverride) {

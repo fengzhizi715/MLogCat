@@ -20,15 +20,19 @@ import android.widget.ProgressBar;
 import cn.salesuite.mlogcat.R;
 import cn.salesuite.mlogcat.app.BaseActivity;
 import cn.salesuite.mlogcat.helper.PackageHelper;
+import cn.salesuite.saf.inject.annotation.InjectView;
 import cn.salesuite.saf.log.L;
 
 
 public class AboutActivity extends BaseActivity implements OnClickListener {
 	
-	private Button okButton;
+	@InjectView
+	Button okButton;
+	
 	private WebView aboutWebView;
+
 	private ProgressBar progressBar;
-	private Handler handler = new Handler();
+	private Handler handler = new MyHandler(this);
 	private View topPanel;
 	
 	
@@ -41,7 +45,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
 
 		topPanel = findViewById(R.id.topPanel);
 		topPanel.setVisibility(View.GONE);
-		okButton = (Button) findViewById(R.id.okButton);
+
 		okButton.setOnClickListener(this);
 		okButton.setVisibility(View.GONE);
 				
@@ -113,8 +117,6 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
 	}
 	
 	private class AboutWebClient extends WebViewClient {
-
-		
 
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, final String url) {

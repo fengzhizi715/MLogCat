@@ -88,7 +88,6 @@ import cn.salesuite.saf.log.L;
 import cn.salesuite.saf.utils.AsyncTaskExecutor;
 import cn.salesuite.saf.utils.SAFUtil;
 
-
 public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrollListener, 
         FilterListener, OnEditorActionListener {
     
@@ -579,63 +578,71 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
 
     private void showFiltersDialog() {
         
-        new AsyncTask<Void, Void, List<FilterItem>>(){
+		AsyncTaskExecutor.executeAsyncTask(new AsyncTask<Void, Void, List<FilterItem>>() {
 
-            @Override
-            protected List<FilterItem> doInBackground(Void... params) {
-                
-                List<FilterItem> filters = new ArrayList<FilterItem>();
-                filters.add(FilterItem.create(-1, null)); // dummy for the "add filter" option
-                
-                CatlogDBHelper dbHelper = null;
-                try {
-                    dbHelper = new CatlogDBHelper(LogcatActivity.this);
-                    filters.addAll(dbHelper.findFilterItems());
-                } finally {
-                    if (dbHelper != null) {
-                        dbHelper.close();
-                    }
-                }
+					@Override
+					protected List<FilterItem> doInBackground(Void... params) {
 
-                Collections.sort(filters);
-                
-                return filters;
-                
-            }
+						List<FilterItem> filters = new ArrayList<FilterItem>();
+						filters.add(FilterItem.create(-1, null)); // dummy for
+																	// the
+																	// "add filter"
+																	// option
 
-            @Override
-            protected void onPostExecute(List<FilterItem> filters) {
-                super.onPostExecute(filters);
-                
-                final FilterAdapter filterAdapter = new FilterAdapter(LogcatActivity.this, filters);
-                
-                new AlertDialog.Builder(LogcatActivity.this)
-                    .setCancelable(true)
-                    .setTitle(R.string.title_filters)
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .setSingleChoiceItems(filterAdapter, 0, new DialogInterface.OnClickListener() {
-                        
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (which == 0) { // dummy 'add filter' item
-                                showAddFilterDialog(filterAdapter);
-                            } else {
-                                // load filter
-                                String text = filterAdapter.getItem(which).getText();
-                                silentlySetSearchText(text);
-                                dialog.dismiss();
-                            }
-                            
-                            
-                        }
-                    })
-                    .show();
-                
-            }
-            
-            
-            
-        }.execute((Void)null);
+						CatlogDBHelper dbHelper = null;
+						try {
+							dbHelper = new CatlogDBHelper(LogcatActivity.this);
+							filters.addAll(dbHelper.findFilterItems());
+						} finally {
+							if (dbHelper != null) {
+								dbHelper.close();
+							}
+						}
+
+						Collections.sort(filters);
+
+						return filters;
+
+					}
+
+					@Override
+					protected void onPostExecute(List<FilterItem> filters) {
+						super.onPostExecute(filters);
+
+						final FilterAdapter filterAdapter = new FilterAdapter(
+								LogcatActivity.this, filters);
+
+						new AlertDialog.Builder(LogcatActivity.this)
+								.setCancelable(true)
+								.setTitle(R.string.title_filters)
+								.setNegativeButton(android.R.string.cancel,
+										null)
+								.setSingleChoiceItems(filterAdapter, 0,
+										new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												if (which == 0) { // dummy 'add
+																	// filter'
+																	// item
+													showAddFilterDialog(filterAdapter);
+												} else {
+													// load filter
+													String text = filterAdapter
+															.getItem(which)
+															.getText();
+													silentlySetSearchText(text);
+													dialog.dismiss();
+												}
+
+											}
+										}).show();
+
+					}
+
+				});
     }
     
     private void showAddFilterDialog(final FilterAdapter filterAdapter) {
@@ -699,36 +706,38 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         final String  trimmed = text.trim();
         if (!TextUtils.isEmpty(trimmed)) {
             
-            new AsyncTask<Void, Void, FilterItem>(){
+			AsyncTaskExecutor.executeAsyncTask(new AsyncTask<Void, Void, FilterItem>() {
 
-                @Override
-                protected FilterItem doInBackground(Void... params) {
-                    CatlogDBHelper dbHelper = null;
-                    try {
-                        dbHelper = new CatlogDBHelper(LogcatActivity.this);
-                        return dbHelper.addFilter(trimmed);
-                        
-                                                    
-                    } finally {
-                        if (dbHelper != null) {
-                            dbHelper.close();
-                        }
-                    }
-                }
+						@Override
+						protected FilterItem doInBackground(Void... params) {
+							CatlogDBHelper dbHelper = null;
+							try {
+								dbHelper = new CatlogDBHelper(
+										LogcatActivity.this);
+								return dbHelper.addFilter(trimmed);
 
-                @Override
-                protected void onPostExecute(FilterItem filterItem) {
-                    super.onPostExecute(filterItem);
-                    
-                    if (filterItem != null) { // null indicates duplicate
-                        filterAdapter.add(filterItem);
-                        filterAdapter.sort(FilterItem.DEFAULT_COMPARATOR);
-                        filterAdapter.notifyDataSetChanged();
-                        
-                        addToAutocompleteSuggestions(trimmed);
-                    }
-                }
-            }.execute((Void)null);
+							} finally {
+								if (dbHelper != null) {
+									dbHelper.close();
+								}
+							}
+						}
+
+						@Override
+						protected void onPostExecute(FilterItem filterItem) {
+							super.onPostExecute(filterItem);
+
+							if (filterItem != null) { // null indicates
+														// duplicate
+								filterAdapter.add(filterItem);
+								filterAdapter
+										.sort(FilterItem.DEFAULT_COMPARATOR);
+								filterAdapter.notifyDataSetChanged();
+
+								addToAutocompleteSuggestions(trimmed);
+							}
+						}
+					});
         }
     }
 
@@ -1022,8 +1031,8 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
             protected void onPostExecute(SendLogDetails sendLogDetails) {
                 super.onPostExecute(sendLogDetails);
                 
-                senderAppAdapter.respondToClick(which, sendLogDetails.getSubject(), sendLogDetails.getBody(), 
-                        sendLogDetails.getAttachmentType(), sendLogDetails.getAttachment());
+                senderAppAdapter.respondToClick(which, sendLogDetails.subject, sendLogDetails.body, 
+                        sendLogDetails.attachmentType, sendLogDetails.attachment);
                 if (getBodyProgressDialog != null && getBodyProgressDialog.isShowing()) {
                     getBodyProgressDialog.dismiss();
                 }
@@ -1067,17 +1076,17 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
             body.append(getCurrentLogAsCharSequence());
         }
         
-        sendLogDetails.setBody(body.toString());
-        sendLogDetails.setSubject(getString(R.string.subject_log_report));
+        sendLogDetails.body = body.toString();
+        sendLogDetails.subject = getString(R.string.subject_log_report);
         
         // either zip up multiple files or just attach the one file
         switch (files.size()) {
         case 0: // no attachments
-            sendLogDetails.setAttachmentType(SendLogDetails.AttachmentType.None);
+            sendLogDetails.attachmentType = SendLogDetails.AttachmentType.None;
             break;
         case 1: // one plaintext file attachment
-            sendLogDetails.setAttachmentType(SendLogDetails.AttachmentType.Text);
-            sendLogDetails.setAttachment(files.get(0));
+            sendLogDetails.attachmentType = SendLogDetails.AttachmentType.Text;
+            sendLogDetails.attachment = files.get(0);
             break;
         default: // 2 files - need to zip them up
             File zipFile = SaveLogHelper.saveTemporaryZipFile(SaveLogHelper.TEMP_ZIP_FILENAME, files);
@@ -1088,8 +1097,8 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
                     file.delete();
                 }
             }
-            sendLogDetails.setAttachmentType(SendLogDetails.AttachmentType.Zip);
-            sendLogDetails.setAttachment(zipFile);
+            sendLogDetails.attachmentType = SendLogDetails.AttachmentType.Zip;
+            sendLogDetails.attachment = zipFile;
             break;
         }
         
@@ -1286,7 +1295,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
     private void openLog(final String filename) {
         
         // do in background to avoid jank
-        
         final AsyncTask<Void, Void, List<LogLine>> openFileTask = new AsyncTask<Void, Void, List<LogLine>>(){
 
             @Override
