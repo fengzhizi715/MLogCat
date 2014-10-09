@@ -24,7 +24,7 @@ import cn.salesuite.saf.inject.annotation.InjectView;
 import cn.salesuite.saf.log.L;
 
 
-public class AboutActivity extends BaseActivity implements OnClickListener {
+public class AboutActivity extends BaseActivity {
 	
 	@InjectView
 	Button okButton;
@@ -41,24 +41,32 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
 	Handler handler = new MyHandler(this);
 	
 	public void onCreate(Bundle savedInstanceState) {
-		
 		super.onCreate(savedInstanceState);
 	
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.logcat_about);
-
+		
+		initViews();				
+	}
+	
+	private void initViews() {
 		topPanel.setVisibility(View.GONE);
-		okButton.setOnClickListener(this);
+		okButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+			
+		});
 		okButton.setVisibility(View.GONE);
 		aboutWebView.setVisibility(View.GONE);
 		aboutWebView.setBackgroundColor(0);
-		
 		aboutWebView.setWebViewClient(new AboutWebClient());
-		
-		initializeWebView();				
+		initializeWebView();
 	}
-	
-	
+
+
 	public void initializeWebView() {
 		
 		String text = loadTextFile(R.raw.about_body);
@@ -96,20 +104,13 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
 		}
 		
 		return sb.toString();
-		
 	}
 	
 	private void loadExternalUrl(String url) {
 		Intent intent = new Intent();
 		intent.setAction("android.intent.action.VIEW"); 
 		intent.setData(Uri.parse(url));
-		
 		startActivity(intent);
-	}
-
-	@Override
-	public void onClick(View v) {
-		finish();
 	}
 	
 	private class AboutWebClient extends WebViewClient {
@@ -134,7 +135,6 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
 			}		
 			return false;
 		}
-
 
 		@Override
 		public void onPageFinished(WebView view, String url) {

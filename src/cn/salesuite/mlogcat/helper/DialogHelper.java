@@ -1,9 +1,5 @@
 package cn.salesuite.mlogcat.helper;
 
-import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -31,6 +27,8 @@ import cn.salesuite.mlogcat.data.FilterQueryWithLevel;
 import cn.salesuite.mlogcat.data.SortedFilterArrayAdapter;
 import cn.salesuite.mlogcat.utils.ArrayUtil;
 import cn.salesuite.mlogcat.utils.Callback;
+import cn.salesuite.saf.utils.AsyncTaskExecutor;
+import cn.salesuite.saf.utils.JodaUtils;
 
 
 public class DialogHelper {
@@ -43,7 +41,7 @@ public class DialogHelper {
 		progressDialog.setMessage(context.getString(R.string.dialog_initializing_recorder));
 		progressDialog.setCancelable(false);
 		
-		new AsyncTask<Void, Void, Void>(){
+		AsyncTaskExecutor.executeAsyncTask(new AsyncTask<Void, Void, Void>() {
 
 			@Override
 			protected void onPreExecute() {
@@ -53,10 +51,11 @@ public class DialogHelper {
 
 			@Override
 			protected Void doInBackground(Void... params) {
-				ServiceHelper.startBackgroundServiceIfNotAlreadyRunning(context, filename, filterQuery, logLevel);
+				ServiceHelper.startBackgroundServiceIfNotAlreadyRunning(
+						context, filename, filterQuery, logLevel);
 				return null;
 			}
-			
+
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
@@ -67,8 +66,7 @@ public class DialogHelper {
 					onPostExecute.run();
 				}
 			}
-		}
-		.execute((Void)null);
+		});
 		
 	}
 	
@@ -205,29 +203,20 @@ public class DialogHelper {
 	}
 
 	private static String createLogFilename() {
-		Date date = new Date();
-		GregorianCalendar calendar = new GregorianCalendar();
-		calendar.setTime(date);
+		String year = JodaUtils.getCurrentYear();
+		String month = JodaUtils.getCurrentMonth();
+		String day = JodaUtils.getCurrentDay();
+		String hour = JodaUtils.getCurrentHour();
+		String minute = JodaUtils.getCurrentMinute();
+		String second = JodaUtils.getCurrentSecond();
 		
-		DecimalFormat twoDigitDecimalFormat = new DecimalFormat("00");
-		DecimalFormat fourDigitDecimalFormat = new DecimalFormat("0000");
-		
-		String year = fourDigitDecimalFormat.format(calendar.get(Calendar.YEAR));
-		String month = twoDigitDecimalFormat.format(calendar.get(Calendar.MONTH) + 1);
-		String day = twoDigitDecimalFormat.format(calendar.get(Calendar.DAY_OF_MONTH));
-		String hour = twoDigitDecimalFormat.format(calendar.get(Calendar.HOUR_OF_DAY));
-		String minute = twoDigitDecimalFormat.format(calendar.get(Calendar.MINUTE));
-		String second = twoDigitDecimalFormat.format(calendar.get(Calendar.SECOND));
-		
-		StringBuilder stringBuilder = new StringBuilder();
-		
-		stringBuilder.append(year).append("-").append(month).append("-")
+		StringBuilder sb = new StringBuilder();
+		sb.append(year).append("-").append(month).append("-")
 				.append(day).append("-").append(hour).append("-")
 				.append(minute).append("-").append(second);
+		sb.append(".txt");
 		
-		stringBuilder.append(".txt");
-		
-		return stringBuilder.toString();
+		return sb.toString();
 	}
 	
 }

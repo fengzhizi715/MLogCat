@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -13,8 +12,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import cn.salesuite.mlogcat.R;
+import cn.salesuite.mlogcat.app.BaseActivity;
 import cn.salesuite.mlogcat.data.FilterQueryWithLevel;
 import cn.salesuite.mlogcat.helper.DialogHelper;
 import cn.salesuite.mlogcat.helper.PreferenceHelper;
@@ -22,12 +21,12 @@ import cn.salesuite.mlogcat.helper.WidgetHelper;
 import cn.salesuite.mlogcat.utils.Callback;
 
 
-public class ShowRecordLogDialogActivity extends Activity {
+public class ShowRecordLogDialogActivity extends BaseActivity {
 	
 	public static final String EXTRA_QUERY_SUGGESTIONS = "suggestions";
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -84,8 +83,7 @@ public class ShowRecordLogDialogActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (DialogHelper.isInvalidFilename(editText.getText())) {
-					
-					Toast.makeText(ShowRecordLogDialogActivity.this, R.string.enter_good_filename, Toast.LENGTH_SHORT).show();
+					toast(R.string.enter_good_filename);
 				} else {
 					
 					String filename = editText.getText().toString();
