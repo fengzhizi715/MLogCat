@@ -512,7 +512,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
                     clipboard.setText(logLine.getOriginalLine());
-                    Toast.makeText(this, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+                    toast(R.string.copied_to_clipboard);
                     return true;
                 case CONTEXT_MENU_FILTER_ID:
 

@@ -160,5 +160,5 @@
     <string name="version">Version %s</string>
     <string name="widget_recording_in_progress">Recording…</string>
     <string name="widget_start_recording">Record Log</string>
-
+    <string name="send_to_author">发送给作者</string>
 </resources>

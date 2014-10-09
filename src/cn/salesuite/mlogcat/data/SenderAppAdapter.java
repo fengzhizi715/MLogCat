@@ -28,7 +28,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.salesuite.mlogcat.R;
+import cn.salesuite.mlogcat.constant.Constant;
 import cn.salesuite.mlogcat.utils.UtilLogger;
+import cn.salesuite.saf.utils.JodaUtils;
 import cn.salesuite.saf.utils.ToastUtil;
 
 /**
@@ -65,10 +67,18 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 			ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE); 
 			
 			clipboard.setText(body);
-//			Toast.makeText(mContext, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
 			ToastUtil.showShort(mContext, R.string.copied_to_clipboard);
+		} else if (launchable instanceof SendToAuthor) {
+			Intent data=new Intent(Intent.ACTION_SENDTO);  
+			data.setData(Uri.parse("mailto:"+Constant.AUTHOR_EMAIL));  
+			data.putExtra(Intent.EXTRA_SUBJECT, subject+JodaUtils.getCurrentDate());  
+			data.putExtra(Intent.EXTRA_TEXT, body);
+			if (attachment != null) {
+				Uri uri = Uri.fromFile(attachment);
+				data.putExtra(Intent.EXTRA_STREAM, uri);
+			}
+			mContext.startActivity(data); 
 		} else {
-		
 			ComponentName name= new ComponentName(activity.applicationInfo.packageName, activity.name);
 			
 			Intent actionSendIntent= createSendIntent(subject, body, attachmentType, attachment);
@@ -87,6 +97,8 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 		filter(items);
 		Collections.sort(items, new ResolveInfo.DisplayNameComparator(mContext.getPackageManager())); 
 
+		items.add(0, new SendToAuthor());
+		
 		if (addClipboard) {
 			items.add(0, new DummyClipboardLaunchable());
 		}
@@ -192,6 +204,26 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 		drawable.draw(c);
 
 		return bmp;
+	}
+	
+	/**
+	 * 发送给作者
+	 * @author Tony Shen
+	 *
+	 */
+	private class SendToAuthor extends ResolveInfo {
+		
+		public Drawable loadIcon(PackageManager pm) {
+			return null;
+		}
+
+		public CharSequence loadLabel(PackageManager pm) {
+			return mContext.getResources().getString(R.string.send_to_author);
+		}
+		
+		public String toString() {
+			return "Dummy";
+		}
 	}
 	
 	private class DummyClipboardLaunchable extends ResolveInfo {
