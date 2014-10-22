@@ -9,28 +9,41 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import cn.salesuite.saf.app.SAFActivity;
 import cn.salesuite.saf.inject.Injector;
 import cn.salesuite.saf.log.L;
+import cn.salesuite.saf.utils.ToastUtil;
 
 /**
  * 工程的基类Activity
  * @author Tony Shen
  *
  */
-public class BaseActivity extends SAFActivity {
+public class BaseActivity extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		L.init(this);
+		L.init(BaseActivity.class);
 	}
 	
 	public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
 		Injector.injectInto(this);
 	}
-
+	
+	/**
+	 * @param message toast的内容
+	 */
+	protected void toast(String message) {
+		ToastUtil.showShort(this, message);
+	}
+	
+	/**
+	 * @param resId toast的内容来自String.xml
+	 */
+	protected void toast(int resId) {
+		ToastUtil.showShort(this, resId);
+	}
 	
 	/**
 	 * 防止内部Handler类引起内存泄露
