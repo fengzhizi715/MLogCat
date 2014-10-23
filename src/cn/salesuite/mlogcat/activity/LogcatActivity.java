@@ -109,7 +109,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
     private ProgressBar darkProgressBar, lightProgressBar;
     private LogLineAdapter adapter;
     private LogReaderAsyncTask task;
-    private ImageView expandButtonImage, pauseButtonImage;
+    private ImageView expandButtonImage, pauseButtonImage,imgLogcat;
     private TextView filenameTextView;
     private View borderView1, borderView2, borderView3, borderView4;
     
@@ -1507,7 +1507,15 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         pauseButton = findViewById(R.id.main_pause_button);
         expandButtonImage = (ImageView) findViewById(R.id.main_expand_button_image);
         pauseButtonImage = (ImageView) findViewById(R.id.main_pause_button_image);
-        
+        imgLogcat = (ImageView) findViewById(R.id.imgLogcat);
+        imgLogcat.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO frankswu : 
+				openOptionsMenu();
+			}
+		});
 		clearButton.setOnClickListener(new OnClickListener() {
 
 			@Override

@@ -40,6 +40,28 @@
             android:nextFocusUp="@+id/main_edit_text"
             android:singleLine="true" />
 
+                
+        <LinearLayout
+            android:id="@+id/btnLogcat"
+            style="@android:style/Widget.Button"
+            android:layout_width="@dimen/main_button_width"
+            android:layout_height="fill_parent"
+            android:background="@android:drawable/list_selector_background"
+            android:gravity="center_vertical|left"
+            android:orientation="horizontal" >
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="@android:color/darker_gray" />
+
+            <ImageView
+                android:id="@+id/imgLogcat"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_menu_send" />
+        </LinearLayout>    
         <LinearLayout
             android:id="@+id/main_pause_button"
             style="@android:style/Widget.Button"
@@ -62,6 +84,7 @@
                 android:src="@drawable/ic_media_pause" />
         </LinearLayout>
 
+    
         <LinearLayout
             android:id="@+id/main_more_button"
             style="@android:style/Widget.Button"
