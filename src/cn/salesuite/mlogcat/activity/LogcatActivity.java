@@ -83,6 +83,7 @@ import cn.salesuite.mlogcat.utils.ArrayUtil;
 import cn.salesuite.mlogcat.utils.LogLineAdapterUtil;
 import cn.salesuite.mlogcat.utils.StringUtil;
 import cn.salesuite.mlogcat.utils.UtilLogger;
+import cn.salesuite.saf.inject.annotation.InjectSystemService;
 import cn.salesuite.saf.inject.annotation.InjectView;
 import cn.salesuite.saf.log.L;
 import cn.salesuite.saf.utils.AsyncTaskExecutor;
@@ -115,6 +116,9 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
     
     @InjectView
     ExceptionCatchingListView listView;
+    
+    @InjectSystemService(Context.CLIPBOARD_SERVICE)
+    ClipboardManager clipboardManager; 
     
     private int firstVisibleItem = -1;
     private boolean autoscrollToBottom = true;
@@ -509,9 +513,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         if (logLine != null) {
             switch (item.getItemId()) {
                 case CONTEXT_MENU_COPY_ID:
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-
-                    clipboard.setText(logLine.getOriginalLine());
+                    clipboardManager.setText(logLine.getOriginalLine());
                     toast(R.string.copied_to_clipboard);
                     return true;
                 case CONTEXT_MENU_FILTER_ID:
