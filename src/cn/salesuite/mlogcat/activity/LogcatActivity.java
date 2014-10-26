@@ -41,6 +41,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -88,6 +89,7 @@ import cn.salesuite.saf.log.L;
 import cn.salesuite.saf.utils.AsyncTaskExecutor;
 import cn.salesuite.saf.utils.SAFUtil;
 import cn.salesuite.saf.utils.StringHelper;
+import cn.salesuite.saf.view.LightDialog;
 
 public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrollListener, 
         FilterListener, OnEditorActionListener {
@@ -1609,13 +1611,45 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
 		                    }
 		                });
 		            }
-		            
 		        
 		        } else {
 		            
 		            logLine.setExpanded(!logLine.isExpanded());
 		            adapter.notifyDataSetChanged();            
 		        }
+			}
+        	
+        });
+        listView.setOnItemLongClickListener(new OnItemLongClickListener(){
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				final LogLine logLine = adapter.getItem(position);
+				
+				final LightDialog dialog = LightDialog.create(LogcatActivity.this,"log content",logLine.getOriginalLine().toString());
+				dialog.setPositiveButton("复制Log内容",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+			                    clipboardManager.setText(logLine.getOriginalLine());
+			                    toast(R.string.copied_to_clipboard);
+							}
+						})
+				.setNegativeButton("取消",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface arg0,
+									int arg1) {
+								dialog.dismiss();
+							}
+						}).show();
+				dialog.show();
+				
+				return false;
 			}
         	
         });
