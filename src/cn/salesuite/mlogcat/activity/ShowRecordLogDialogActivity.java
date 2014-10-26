@@ -34,7 +34,7 @@ public class ShowRecordLogDialogActivity extends BaseActivity {
         
 		setContentView(R.layout.logcat_record_log_dialog);
 		
-		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		
 		// grab the search suggestions, if any
 		final List<String> suggestions = (getIntent() != null && getIntent().hasExtra(EXTRA_QUERY_SUGGESTIONS))
@@ -118,6 +118,5 @@ public class ShowRecordLogDialogActivity extends BaseActivity {
 		// update widgets when the dialog is complete
 		
 		WidgetHelper.updateWidgets(this);
-		
 	}
 }

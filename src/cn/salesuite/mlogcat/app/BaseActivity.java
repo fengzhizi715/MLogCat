@@ -20,6 +20,8 @@ import cn.salesuite.saf.utils.ToastUtil;
  */
 public class BaseActivity extends Activity {
 	
+	protected Handler mHandler = new MyHandler(this);
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		

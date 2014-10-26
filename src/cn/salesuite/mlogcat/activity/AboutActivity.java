@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -37,8 +36,6 @@ public class AboutActivity extends BaseActivity {
 
 	@InjectView
 	ProgressBar progressBar;
-	
-	Handler handler = new MyHandler(this);
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -125,7 +122,7 @@ public class AboutActivity extends BaseActivity {
 			// the links within the page itself don't work!!  Arggggh!!!
 			
 			if (url.startsWith("http") || url.startsWith("mailto") || url.startsWith("market")) {
-				handler.post(new Runnable() {
+				mHandler.post(new Runnable() {
 					@Override
 					public void run() {
 						loadExternalUrl(url);
@@ -139,7 +136,7 @@ public class AboutActivity extends BaseActivity {
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			// dismiss the loading bar when the page has finished loading
-			handler.post(new Runnable(){
+			mHandler.post(new Runnable(){
 
 				@Override
 				public void run() {

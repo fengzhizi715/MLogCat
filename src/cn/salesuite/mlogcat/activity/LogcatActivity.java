@@ -20,7 +20,6 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -129,8 +128,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
     private SortedFilterArrayAdapter<String> searchSuggestionsAdapter;
     
     private String currentlyOpenLog = null;
-    
-    private Handler handler = new MyHandler(this);
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -320,7 +317,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
     }
 
     private void onSettingsActivityResult(final Intent data) {
-        handler.post(new Runnable(){
+    	mHandler.post(new Runnable(){
 
             @Override
             public void run() {
@@ -1328,7 +1325,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
                 
                 // notify the user if the saved file was truncated
                 if (savedLog.isTruncated()) {
-                    handler.post(new Runnable() {
+                	mHandler.post(new Runnable() {
                         public void run() {
                             String toastText = String.format(getString(R.string.toast_log_truncated), maxLines);
                             Toast.makeText(LogcatActivity.this, toastText, Toast.LENGTH_LONG).show();
@@ -1591,7 +1588,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
 		            
 		            partiallySelectedLogLines.add(logLine);
 
-		            handler.post(new Runnable() {
+		            mHandler.post(new Runnable() {
 
 		                @Override
 		                public void run() {
@@ -1603,7 +1600,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
 
 		            if (partiallySelectedLogLines.size() == 2) {
 		                // last line
-		                handler.post(new Runnable() {
+		            	mHandler.post(new Runnable() {
 
 		                    @Override
 		                    public void run() {
@@ -1679,7 +1676,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         }
         partiallySelectedLogLines.clear();
         if (changed) {
-            handler.post(new Runnable() {
+        	mHandler.post(new Runnable() {
                 
                 @Override
                 public void run() {
@@ -1829,7 +1826,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
 
         final int color = colorScheme.getBackgroundColor(LogcatActivity.this);
         
-        handler.post(new Runnable() {
+        mHandler.post(new Runnable() {
             public void run() {
                 backgroundLayout.setBackgroundColor(color);
             }
