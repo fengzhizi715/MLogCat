@@ -37,7 +37,6 @@ public class LogLineViewWrapper {
 		return timestampTextView;
 	}	
 
-	
 	public TextView getTagTextView() {
 		if (tagTextView == null) {
 			tagTextView = (TextView) view.findViewById(R.id.tag_text);

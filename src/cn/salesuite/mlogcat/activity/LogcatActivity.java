@@ -149,7 +149,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
 
 		initData();
 	}
-
     
     private void initData() {
         
@@ -237,8 +236,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         } else {
             doAfterInitialMessage(getIntent());
         }
-
-        
     }
 
     private void doAfterInitialMessage(Intent intent) {
@@ -762,7 +759,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         if (hideHelp) {
             partialSelectMode = true;
             partiallySelectedLogLines.clear();
-            Toast.makeText(this, R.string.toast_started_select_partial, Toast.LENGTH_SHORT).show();
+            toast(R.string.toast_started_select_partial);
         } else {
         
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -783,7 +780,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
                     public void onClick(DialogInterface dialog, int which) {
                         partialSelectMode = true;
                         partiallySelectedLogLines.clear();
-                        Toast.makeText(LogcatActivity.this, R.string.toast_started_select_partial, Toast.LENGTH_SHORT).show();
+                        toast(R.string.toast_started_select_partial);
                         
                         if (checkBox.isChecked()) {
                             // hide this help dialog in the future
@@ -1052,8 +1049,8 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
                 }
             }
         };
-        getBodyTask.execute((Void) null);
         
+        AsyncTaskExecutor.executeAsyncTask(getBodyTask);
     }
 
     private SendLogDetails getSendLogDetailsInBackground(boolean asText, boolean includeDeviceInfo) {
@@ -1387,9 +1384,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         lightProgressBar.setVisibility(colorScheme.isUseLightProgressBar() ? View.VISIBLE : View.GONE);
     }
 
-
-
-
     private void resetDisplayedLog(String filename) {
         
         adapter.clear();
@@ -1403,7 +1397,6 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
         addFiltersToSuggestions(); // filters are what initial populate the suggestions
         updateDisplayedFilename();
         resetFilter();
-        
     }
 
     private void updateDisplayedFilename() {
