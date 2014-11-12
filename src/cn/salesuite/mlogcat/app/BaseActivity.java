@@ -11,7 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import cn.salesuite.saf.inject.Injector;
 import cn.salesuite.saf.log.L;
-import cn.salesuite.saf.utils.ToastUtil;
+import cn.salesuite.saf.utils.ToastUtils;
 
 /**
  * 工程的基类Activity
@@ -37,14 +37,14 @@ public class BaseActivity extends Activity {
 	 * @param message toast的内容
 	 */
 	protected void toast(String message) {
-		ToastUtil.showShort(this, message);
+		ToastUtils.showShort(this, message);
 	}
 	
 	/**
 	 * @param resId toast的内容来自String.xml
 	 */
 	protected void toast(int resId) {
-		ToastUtil.showShort(this, resId);
+		ToastUtils.showShort(this, resId);
 	}
 	
 	/**

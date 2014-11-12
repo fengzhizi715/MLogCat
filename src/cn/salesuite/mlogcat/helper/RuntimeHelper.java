@@ -8,7 +8,7 @@ import java.util.List;
 import android.text.TextUtils;
 
 import cn.salesuite.mlogcat.utils.ArrayUtil;
-import cn.salesuite.saf.utils.SAFUtil;
+import cn.salesuite.saf.utils.SAFUtils;
 
 
 /**
@@ -24,7 +24,7 @@ public class RuntimeHelper {
 	 */
 	public static Process exec(List<String> args) throws IOException {
 		// since JellyBean, sudo is required to read other apps' logs
-		if (SAFUtil.isJellyBeanOrHigher()
+		if (SAFUtils.isJellyBeanOrHigher()
 				&& !SuperUserHelper.isFailedToObtainRoot()) {
 			Process process = Runtime.getRuntime().exec("su");
 			
@@ -47,7 +47,7 @@ public class RuntimeHelper {
 	public static void destroy(Process process) {
 	    // if we're in JellyBean, then we need to kill the process as root, which requires all this
 	    // extra UnixProcess logic
-	    if (SAFUtil.isJellyBeanOrHigher()
+	    if (SAFUtils.isJellyBeanOrHigher()
 	            && !SuperUserHelper.isFailedToObtainRoot()) {
 	       SuperUserHelper.destroy(process);
 	    } else {

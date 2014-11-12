@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.salesuite.mlogcat.utils.UtilLogger;
-import cn.salesuite.saf.utils.SAFUtil;
+import cn.salesuite.saf.utils.SAFUtils;
 
 
 public class LogcatHelper {
@@ -66,7 +66,7 @@ public class LogcatHelper {
 			}
 			// post-jellybean, we just kill the process, so there's no need
 	        // to close the bufferedReader.  Anyway, it just hangs.
-	        if (!SAFUtil.isJellyBeanOrHigher() && reader != null) {
+	        if (!SAFUtils.isJellyBeanOrHigher() && reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {

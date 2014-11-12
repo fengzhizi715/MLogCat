@@ -9,8 +9,8 @@ import java.util.List;
 import cn.salesuite.mlogcat.helper.LogcatHelper;
 import cn.salesuite.mlogcat.helper.RuntimeHelper;
 import cn.salesuite.saf.log.L;
-import cn.salesuite.saf.utils.SAFUtil;
-import cn.salesuite.saf.utils.StringHelper;
+import cn.salesuite.saf.utils.SAFUtils;
+import cn.salesuite.saf.utils.StringUtils;
 
 
 public class SingleLogcatReader extends AbsLogcatReader {
@@ -56,7 +56,7 @@ public class SingleLogcatReader extends AbsLogcatReader {
 		// post-jellybean, we just kill the process, so there's no need
 		// to close the bufferedReader.  Anyway, it just hangs.
 		
-		if (!SAFUtil.isJellyBeanOrHigher()
+		if (!SAFUtils.isJellyBeanOrHigher()
 		        && bufferedReader != null) {
 			try {
 				bufferedReader.close();
@@ -90,7 +90,7 @@ public class SingleLogcatReader extends AbsLogcatReader {
 	
 	private boolean isDatedLogLine(String line) {
 		// 18 is the size of the logcat timestamp
-		return (StringHelper.isNotBlank(line) && line.length() >= 18 && Character.isDigit(line.charAt(0)));
+		return (StringUtils.isNotBlank(line) && line.length() >= 18 && Character.isDigit(line.charAt(0)));
 	}
 
 

@@ -31,7 +31,7 @@ import cn.salesuite.mlogcat.R;
 import cn.salesuite.mlogcat.constant.Constant;
 import cn.salesuite.mlogcat.utils.UtilLogger;
 import cn.salesuite.saf.utils.JodaUtils;
-import cn.salesuite.saf.utils.ToastUtil;
+import cn.salesuite.saf.utils.ToastUtils;
 
 /**
  * Adapter that shows any apps in the system that respond to Intent.ACTION_SEND intents.  Filters out any apps in
@@ -67,7 +67,7 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 			ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE); 
 			
 			clipboard.setText(body);
-			ToastUtil.showShort(mContext, R.string.copied_to_clipboard);
+			ToastUtils.showShort(mContext, R.string.copied_to_clipboard);
 		} else if (launchable instanceof SendToAuthor) {
 			Intent data=new Intent(Intent.ACTION_SENDTO);  
 			data.setData(Uri.parse("mailto:"+Constant.AUTHOR_EMAIL));  
@@ -227,8 +227,7 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 	}
 	
 	private class DummyClipboardLaunchable extends ResolveInfo {
-
-			
+	
 		public Drawable loadIcon(PackageManager pm) {
 			return null;
 		}

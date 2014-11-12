@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import cn.salesuite.mlogcat.R;
 import cn.salesuite.mlogcat.utils.Callback;
 import cn.salesuite.mlogcat.utils.Function;
-import cn.salesuite.saf.utils.SAFUtil;
+import cn.salesuite.saf.utils.SAFUtils;
 
 /**
  * Helper for applying app-wide updates of persistent data.
@@ -85,7 +85,7 @@ public class UpdateHelper {
                         @Override
                         public Boolean apply(Context context) {
                         	
-                        	return SAFUtil.isJellyBeanOrHigher() && !PreferenceHelper.getJellybeanRootRan(context);
+                        	return SAFUtils.isJellyBeanOrHigher() && !PreferenceHelper.getJellybeanRootRan(context);
                         }
                     }, new Callback<Context>(){
 

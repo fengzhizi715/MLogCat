@@ -87,8 +87,8 @@ import cn.salesuite.saf.inject.annotation.InjectSystemService;
 import cn.salesuite.saf.inject.annotation.InjectView;
 import cn.salesuite.saf.log.L;
 import cn.salesuite.saf.utils.AsyncTaskExecutor;
-import cn.salesuite.saf.utils.SAFUtil;
-import cn.salesuite.saf.utils.StringHelper;
+import cn.salesuite.saf.utils.SAFUtils;
+import cn.salesuite.saf.utils.StringUtils;
 import cn.salesuite.saf.view.LightDialog;
 
 public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrollListener, 
@@ -247,11 +247,11 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
             String filter = intent.getStringExtra(Constant.EXTRA_FILTER);
             String level = intent.getStringExtra(Constant.EXTRA_LEVEL);
             
-            if (StringHelper.isNotBlank(filter)) {
+            if (StringUtils.isNotBlank(filter)) {
                 silentlySetSearchText(filter);
             }
             
-            if (StringHelper.isNotBlank(level)) {
+            if (StringUtils.isNotBlank(level)) {
                 CharSequence[] logLevels = getResources().getStringArray(R.array.log_levels_values);
                 int logLevelLimit = ArrayUtil.indexOf(logLevels, level.toUpperCase(Locale.US));
                 
@@ -1275,7 +1275,7 @@ public class LogcatActivity extends BaseActivity implements TextWatcher, OnScrol
                 this, filenames, logToSelect, false);
         
         Builder builder = null;
-		if (SAFUtil.isICSOrHigher())
+		if (SAFUtils.isICSOrHigher())
 			builder = new Builder(this, 3);
 		else {
 			builder = new Builder(this);
